@@ -4,10 +4,7 @@ executable_control:
   # For file-based imports of Python files, cannot have the "executable" be
   # copied to a temporary directory
   run_from_tmpdir: false
-
-  # Default prefix for windows operations
-  # Uncomment on Windows
-  # prefix: !if-windows-else [[python], ~]
+  prefix: !if-windows-else [[python], ~]
 
 parameter_space:
   num_epochs: 100
