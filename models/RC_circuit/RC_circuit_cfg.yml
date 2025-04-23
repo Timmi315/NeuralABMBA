@@ -2,7 +2,7 @@ Data:
   synthetic_data:
 
     # Length of time series
-    num_steps: 100
+    num_steps: 1000
 
     # True values for R and C
     R: !is-positive 1.2
@@ -32,10 +32,10 @@ Data:
           upper: 0.1
 
     # Variance for the fluctuation of T_out:
-    T_out_std: !is-positive-or-zero 0.1
+    T_out_std: !is-positive-or-zero 0.01
 
     # Variance for the fluctuation of Q:
-    Q_std: !is-positive-or-zero 0.05
+    Q_std: !is-positive-or-zero 0.02
 
   # Time differential to use
   dt: 0.01
@@ -55,7 +55,7 @@ NeuralNet:
 
 # Settings for the training
 Training:
-  batch_size: !is-positive-int 1
+  batch_size: !is-positive-int 10
   loss_function:
     name: MSELoss
     kwargs:

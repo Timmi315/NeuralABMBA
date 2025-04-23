@@ -50,6 +50,7 @@ def plot_prob_density(
 
     def _plot_1d(*, _x, _y, _yerr, _smooth_kwargs, _ax, _label=None, **_plot_kwargs):
         """Plots a single parameter density and smooths the marginal. Returns the artists for the legend."""
+        #print(f"plot_1d(x = {_x}, y = {_y}, y_err = {_yerr}, _smooth_kwargs = {_smooth_kwargs})")
         smooth, sigma = _smooth_kwargs.pop("enabled", False), _smooth_kwargs.pop(
             "smoothing", None
         )
@@ -60,6 +61,12 @@ def plot_prob_density(
         # If no yerr is given, plot a single line
         if _yerr is None:
             (ebar,) = hlpr.ax.plot(_x, _y, label=_label, **_plot_kwargs)
+            _ymax = max(_y)
+            for i, k in enumerate(_y):
+                if k == _ymax:
+                    _xmax = i
+            hlpr.ax.axvline(_x[_xmax], color = "red", linewidth = 0.5)
+            hlpr.ax.text(_x[_xmax]*1.1, _ymax/2, f"μ = {_x.values[_xmax]}")
             return ebar
 
         # Else, plot errorbands

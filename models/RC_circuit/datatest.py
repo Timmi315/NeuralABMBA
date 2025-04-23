@@ -61,6 +61,8 @@ def ls_estimation(data, dt, gamma):
     # Final parameters
     print(f'Estimated C: {C.item()}, Estimated R: {R.item()}')
 
+#TIMO GND --||-- T_in --[__]-- T_out ?
+#TIMO       C            R              is that the circuit?
 cfg = {
     "initial_conditions": {
         "T_in": {
@@ -71,10 +73,12 @@ cfg = {
             "distribution": "uniform",
             "parameters": {"lower": 270, "upper": 270}
         },
+        #Heating inside
         "Q_H": {
             "distribution": "uniform",
             "parameters": {"lower": 0, "upper": 0}
         },
+        #Heating outside
         "Q_O": {
             "distribution": "uniform",
             "parameters": {"lower": 0, "upper": 0}
@@ -83,8 +87,8 @@ cfg = {
     "num_steps": 10*24*60,  # You can adjust the number of steps as needed
     "C": 3.0,          # Capacitance
     "R": 100,           # Resistance
-    "T_out_std": 1,   # Standard deviation for T_out fluctuation
-    "Q_std": 1        # Standard deviation for Q_H and Q_O fluctuation
+    "T_out_std": 0,   # Standard deviation for T_out fluctuation
+    "Q_std": 0        # Standard deviation for Q_H and Q_O fluctuation
     }
 
 dt = 1  #Time differential

@@ -1,0 +1,61 @@
+perform_sweep: True
+paths:
+  model_note: Sweep_example
+parameter_space:
+
+  # Number of different runs
+  seed: !sweep
+    default: 0
+    range: [50]
+
+  num_epochs: 1000
+
+  RC_circuit:
+    Data:
+      #load_from_dir: data/RC_circuit/Example_data/data.h5
+      synthetic_data:
+        # Length of time series
+        num_steps: 100 #larger values slow down a lot
+        # True values for R and C
+        R: 100
+        C: 3
+        T_out_std: 1
+        Q_std: 1
+        initial_conditions:
+          T_in:
+            distribution: uniform
+            parameters:
+              lower: 290
+              upper: 290
+          T_out:
+            distribution: uniform
+            parameters:
+              lower: 270
+              upper: 270
+          Q_H:
+            distribution: uniform
+            parameters:
+              lower: 0
+              upper: 0
+          Q_O:
+            distribution: uniform
+            parameters:
+              lower: 0
+              upper: 0
+    Training:
+      batch_size: 50
+      scaling_factors:
+        R: 100
+        #C: 3
+      #device: cuda, doesnt work
+
+    NeuralNet:
+      prior:
+        - distribution: uniform # R, including the scaler, so set to values R/scaler
+          parameters:
+            lower: 0.5
+            upper: 2
+        - distribution: uniform # C
+          parameters:
+            lower: 0.5
+            upper: 5

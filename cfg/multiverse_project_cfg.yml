@@ -7,7 +7,7 @@ executable_control:
   prefix: !if-windows-else [[python], ~]
 
 parameter_space:
-  num_epochs: 100
+  num_epochs: 50
   write_start: 1
   write_every: 1
 

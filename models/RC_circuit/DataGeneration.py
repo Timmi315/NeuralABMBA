@@ -10,6 +10,7 @@ sys.path.append(up(up(up(__file__))))
 from dantro._import_tools import import_module_from_path
 
 base = import_module_from_path(mod_path=up(up(up(__file__))), mod_str="include")
+print(up(up(up(__file__))))
 
 log = logging.getLogger(__name__)
 
@@ -35,6 +36,7 @@ def generate_synthetic_data(cfg: dict, *, dt: float) -> torch.Tensor:
          base.random_tensor(cfg["initial_conditions"]["Q_H"], size=(1,)),
          base.random_tensor(cfg["initial_conditions"]["Q_O"], size=(1,))]
     )
+    print(initial_condition)
 
     data = [initial_condition]
 
@@ -81,7 +83,7 @@ def get_RC_circuit_data(*, data_cfg: dict, h5group: h5.Group):
             cfg=data_cfg["synthetic_data"],
             dt=data_cfg["dt"]
         )
-
+    
     else:
         raise ValueError(
             f"You must supply one of 'load_from_dir' or 'synthetic data' keys!"
