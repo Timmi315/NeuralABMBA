@@ -71,15 +71,17 @@ if __name__ == "__main__":
     )
     log.info(f"      training_data.shape = {training_data.shape}")
 
-    physical = getattr(Physicals, model_cfg["Data"]["model_type"])
+    # get the physical model object used for simulating temperature.
+    physical = getattr(Physicals, model_cfg["Training"]["model_type"])
 
     # Initialise the neural net
-    log.info(f"   Initializing the neural net (inpsize: {physical.dynamic_variables}, outpsize {len(model_cfg["Training"]["to_learn"])}) ...")
+    log.info(f"   Initializing the neural net (inpsize: {model_cfg["NeuralNet"]["lookback"]*training_data.shape[2]}, outpsize {len(model_cfg["Training"]["to_learn"])}) ...")
 
     
 
     net = base.NeuralNet(
-        input_size=physical.dynamic_variables,
+        input_size=model_cfg["NeuralNet"]["lookback"]*training_data.shape[2],
+        #input_size = 1,
         output_size=len(model_cfg["Training"]["to_learn"]),
         **model_cfg["NeuralNet"],
     ).to(device)
@@ -92,9 +94,10 @@ if __name__ == "__main__":
         write_every=cfg["write_every"],
         write_start=cfg["write_start"],
         num_steps=training_data.shape[1],
-        training_data=training_data[:, :physical.dynamic_variables, :],
-        external_data=training_data[:, physical.dynamic_variables:, :],
+        training_data=training_data[:, :, :physical.dynamic_variables, :],
+        external_data=training_data[:, :, physical.dynamic_variables:, :],
         physical = physical,
+        input_size = model_cfg["NeuralNet"]["lookback"],
         dt=model_cfg["Data"]["dt"],
         **model_cfg["Training"],
     )
@@ -112,5 +115,6 @@ if __name__ == "__main__":
     log.info("   Simulation run finished.")
     log.info("   Wrapping up ...")
     h5file.close()
+    torch.save(net.state_dict(), f"{cfg["output_path"][:-7]}neural_net.pth")
 
     log.success("   All done.")

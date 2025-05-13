@@ -7,6 +7,7 @@ import numpy as np
 import torch
 from dantro import logging
 from dantro._import_tools import import_module_from_path
+import random
 
 sys.path.append(up(up(__file__)))
 sys.path.append(up(up(up(__file__))))
@@ -35,6 +36,7 @@ class RC_model_NN:
         external_data: torch.Tensor,
         physical,
         batch_size: int,
+        input_size: int,
         scaling_factors: dict = {},
         **__,
     ):
@@ -83,6 +85,7 @@ class RC_model_NN:
         self.dt = torch.tensor(dt).float()
 
         # Generate the batch ids
+        '''
         batches = np.arange(0, self.training_data.shape[0], batch_size)
         if len(batches) == 1:
             batches = np.append(batches, training_data.shape[0] - 1)
@@ -90,6 +93,7 @@ class RC_model_NN:
             if batches[-1] != training_data.shape[0] - 1:
                 batches = np.append(batches, training_data.shape[0] - 1)
         self.batches = batches
+        '''
 
         # Scaling factors to use for the parameters, if given
         self.scaling_factors = scaling_factors
@@ -133,7 +137,11 @@ class RC_model_NN:
         self.dset_parameters.attrs["coords__parameter"] = to_learn
 
         # The training data and batch ids
+        timeseries_length = training_data.shape[1]
+        number_of_timeseries = training_data.shape[0]
         self.training_data = training_data
+
+        self.batch_size = batch_size
 
         batches = np.arange(0, training_data.shape[0], batch_size)
         if len(batches) == 1:
@@ -148,6 +156,18 @@ class RC_model_NN:
         self._write_every = write_every
         self._write_start = write_start
 
+        self.input_size = input_size
+
+
+    def shuffle_data(self):
+        windows_per_series = int(self.training_data.shape[1]/self.batch_size)
+        out = []
+        for i in range(windows_per_series):
+            for k in range(self.training_data.shape[0]):
+                index = np.random.randint(self.training_data.shape[1]-self.batch_size)
+                out.append((k, slice(index, index+self.batch_size)))
+        random.shuffle(out)
+        return out
 
     def epoch(self):
         """
@@ -160,11 +180,51 @@ class RC_model_NN:
         """
 
         # Process the training data in batches
+        
+        for batch_no, batch in enumerate(self.shuffle_data()):
+            # Make a prediction
+            
+            predicted_parameters = self.neural_net(torch.flatten(torch.cat(
+                                                        (self.training_data[batch][:self.input_size],
+                                                        self.external_data[batch][:self.input_size]), 1)))
+
+            # get the parameters
+            parameters = [self.scaling_factors.get(key , 1.0)*predicted_parameters[self.to_learn[key]]
+                            if key in self.to_learn.keys() else self.true_parameters[key]
+                            for key in self.physical.parameter_names]
+
+             # Get current initial condition and make traceable
+            current_densities = self.training_data[batch][0].clone()
+            current_densities.requires_grad_(True)
+
+            loss = torch.tensor(0.0, requires_grad=True)
+
+            for t in range(1, self.batch_size):
+                # simulate using the parameters
+                current_densities = torch.stack(self.physical.step(current_densities, self.external_data[batch][t-1], parameters, self.dt))
+
+                # calculate loss
+                loss = loss + self.loss_function(
+                        current_densities, self.training_data[batch][t])
+                #    ) /self.batch_size
+            loss.backward()
+            self.neural_net.optimizer.step()
+            self.neural_net.optimizer.zero_grad()
+            self.current_loss = loss.clone().detach().cpu().numpy().item()
+            self.current_predictions = predicted_parameters.clone().detach().cpu()
+
+            self._time += 1
+            self.write_data()
+        '''
+            
         for batch_no, batch_idx in enumerate(self.batches[:-1]):
 
             # Make a prediction
+            newdata = torch.flatten(torch.cat((self.training_data[batch_idx:batch_idx+self.input_size],
+                                                self.external_data[batch_idx:batch_idx+self.input_size]), 1))
             predicted_parameters = self.neural_net(
-                torch.flatten(self.training_data[batch_idx])
+                #torch.flatten(self.training_data[batch_idx])
+                newdata
             )
 
             # Get the parameters: resistance and capacity
@@ -173,7 +233,7 @@ class RC_model_NN:
                             for key in self.physical.parameter_names]
             #parameters = [4896000, 0.00531, 1112400, 0.000639]
             #parameters = [7452000, 0.00529]
-            '''R = (
+            R = (
                 self.scaling_factors.get("R", 1.0) * predicted_parameters[self.to_learn["R"]]
                 if "R" in self.to_learn.keys()
                 else self.true_parameters["R"]
@@ -182,7 +242,7 @@ class RC_model_NN:
                 self.scaling_factors.get("C", 1.0) * predicted_parameters[self.to_learn["C"]]
                 if "C" in self.to_learn.keys()
                 else self.true_parameters["C"]
-            )'''
+            )
 
             # Get current initial condition and make traceable
             current_densities = self.training_data[batch_idx].clone()
@@ -197,14 +257,13 @@ class RC_model_NN:
                 #print(R)
                 # Generate the next step of the time series
                 current_densities = torch.stack(self.physical.step(current_densities, self.external_data[t], parameters, self.dt))
-                '''current_densities = current_densities + self.dt / C * (
+                current_densities = current_densities + self.dt / C * (
                         (self.external_data[t][0] - current_densities) / R
                         + self.external_data[t][1]
                         + self.external_data[t][2]
-                )'''
+                )
 
                 # Calculate loss
-                #print(f"loss_function({current_densities}, {self.training_data[t].squeeze()}) = {self.loss_function(current_densities, self.training_data[t].squeeze())}")
                 loss = loss + self.loss_function(
                     current_densities, self.training_data[t]
                 ) * (
@@ -212,14 +271,8 @@ class RC_model_NN:
                     / (self.batches[batch_no + 1] - batch_idx)
 
                 )
-            loss.backward()
-            self.neural_net.optimizer.step()
-            self.neural_net.optimizer.zero_grad()
-            self.current_loss = loss.clone().detach().cpu().numpy().item()
-            self.current_predictions = predicted_parameters.clone().detach().cpu()
-
-            self._time += 1
-            self.write_data()
+            '''
+            
 
     def write_data(self):
         """Write the current state (loss and parameter predictions) into the state dataset.

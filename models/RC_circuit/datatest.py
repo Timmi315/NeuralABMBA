@@ -41,6 +41,7 @@ def ls_estimation(data, dt, gamma):
 
         # Compute the predicted next T_in using the model equation
         T_in_predicted = data[:-1, 0, 0] + dt / C * ((data[:-1, 1, 0] - data[:-1, 0, 0]) / R + data[:-1, 2, 0] + data[:-1, 3, 0])
+        print(data[:-1, 0, 0])
 
         # Calculate the loss (Mean Squared Error)
         loss = (T_in_predicted - data[1:, 0, 0]).pow(2).mean()  # Comparing to the next actual T_in value
@@ -94,5 +95,5 @@ cfg = {
 dt = 1  #Time differential
 data = generate_synthetic_data(cfg, dt=dt) # type: torch.Tensor, size [num_steps, num_variables, 1], Generate synthetic data
 
-plot_data(data, dt, cfg)
-#ls_estimation(data, dt, gamma=1)
+#plot_data(data, dt, cfg)
+ls_estimation(data, dt, gamma=1)

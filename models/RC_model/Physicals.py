@@ -5,18 +5,22 @@ class RC:
     plot_args = {
         "T_in": {
             "offset": -273.15,
+            "multi": 1,
             "kwargs": {}
         },
         "T_out":{
             "offset": -273.15,
+            "multi": 1,
             "kwargs": {}
         },
-        "heatPower": {
+        "heatPower [kW]": {
             "offset": 0,
+            "multi": 0.001,
             "kwargs": {"alpha": 0.5}
         },
-        "Q_solar": {
+        "Q_solar [kW]": {
             "offset" : 0,
+            "multi": 0.001,
             "kwargs": {"alpha": 0.5}
         }
     }
@@ -44,22 +48,27 @@ class TiTh:
     plot_args = {
         "T_in": {
             "offset": -273.15,
+            "multi": 1,
             "kwargs": {}
         },
         "T_heater": {
             "offset": -273.15,
+            "multi": 1,
             "kwargs": {"alpha": 0.5}
         },
         "T_out":{
             "offset": -273.15,
+            "multi": 1,
             "kwargs": {}
         },
         "heatPower": {
             "offset": 0,
+            "multi": 0.001,
             "kwargs": {"alpha": 0.5}
         },
         "Q_solar": {
             "offset" : 0,
+            "multi": 0.001,
             "kwargs": {"alpha": 0.5}
         }
     }

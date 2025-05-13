@@ -3,7 +3,7 @@ Data:
   #  path: data/RC_model/MunichPI.csv
   #  effWinArea: 5
   #  subset: 96 #use this amount of data points from the file (1 point ~ 900s ~ 15min in BuildA) (96 ~ 1d, 288 ~ 3d)
-  model_type: TiTh
+  model_type: RC
   synthetic_data:
     initial_conditions:
       T_in: 290
@@ -12,7 +12,8 @@ Data:
     controller: PControl #PControl, TwoPointControl
     T_min: 290 #[K]
     T_max: 294 #[K]
-    num_steps: 144000 #1500d
+    #num_steps: 1440 #15d
+    num_steps: 3000
     C: 7452000 #taken from  Identifying suitable models for the heat dynamics of buildings: Peder Bacher, Henrik Madsen
     R: 0.00529
     C1: 4896000
@@ -24,6 +25,7 @@ Data:
 
 # Settings for the neural network
 NeuralNet:
+  lookback: 10 #amount of timesteps input for param estimation. has to be < than batch_size due to implementation.
   num_layers: !is-positive-int 3
   nodes_per_layer:
     default: !is-positive-int 20
@@ -34,15 +36,17 @@ NeuralNet:
     layer_specific:
       -1: abs
   learning_rate: !is-positive 0.002
+  optimizer: Adam
 
 # Settings for the training
 Training:
-  batch_size: !is-positive-int 1000
+  model_type: RC
+  batch_size: !is-positive-int 100
   loss_function:
     name: MSELoss
     kwargs:
       reduction: sum
-  to_learn: [ R1, C1, R2, C2 ]
+  to_learn: [ R, C ]
   #true_parameters:
     #C1: 4896000
     #R1: 0.00531

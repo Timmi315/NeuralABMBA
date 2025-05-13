@@ -6,6 +6,7 @@ from os.path import dirname as up
 import numpy as np
 import pandas as pd
 import Physicals
+import copy
 
 sys.path.append(up(up(up(__file__))))
 
@@ -46,7 +47,6 @@ def generate_weather_based_data(cfg: dict, *, dt: float) -> torch.Tensor:
     """
 
     # Draw an initial condition for the data using the prior defined in the config
-    # Uses the random_tensor function defined in include.utils
 
     wdata, _ = read_mos(up(up(up(__file__))) + "/data/RC_model/weatherData/Munich_5years.mos")
     wdata = wdata.to_numpy(dtype = float)
@@ -54,24 +54,34 @@ def generate_weather_based_data(cfg: dict, *, dt: float) -> torch.Tensor:
     model = getattr(Physicals, cfg["model_type"])
     initial_condition = torch.Tensor(model.initial_condition(cfg, wdata))
 
-    data = [initial_condition]
+    
+
     parameters = [cfg[param] for param in model.parameter_names]
+    if isinstance(parameters[0], int):
+        parameters = [[parameters]]
+    
+    out = []
 
     # Generate some synthetic time series
-    for i in range(cfg['num_steps']):
+    for params in zip(*parameters):
+        data = [initial_condition]
+        if isinstance(params[0], list):
+            params = params[0]
+        for i in range(cfg['num_steps']):
 
-        # Solve the equation for T_in and generate a time series for T_out and the Q values dt/C*((T_in-T_out)/R + QH + QO)
-        heatPower = apply_controller(cfg, data[-1], list(model.plot_args).index("heatPower"))
+            # Solve the equation for T_in and generate a time series for T_out and the Q values dt/C*((T_in-T_out)/R + QH + QO)
+            heatPower = apply_controller(cfg, data[-1], list(model.plot_args).index("heatPower [kW]"))
 
-        # these format acrobatics are done to use the same step function in the NN and here
-        densities = data[-1][:model.dynamic_variables]
-        dat = [wdata[int(i*dt/3600)][2]+273.15, heatPower, wdata[int(i*dt/3600)][8]*cfg["effWinArea"]]
- 
-        data.append(torch.cat((
-            torch.Tensor(model.step(densities, dat, parameters, dt)),
-            torch.Tensor(dat)
-            )))
-    return torch.reshape(torch.stack(data), (len(data), len(model.plot_args), 1))
+            # these format acrobatics are done to use the same step function in the NN and here
+            densities = data[-1][:model.dynamic_variables]
+            dat = [wdata[int(i*dt/3600)][2]+273.15, heatPower, wdata[int(i*dt/3600)][8]*cfg["effWinArea"]]
+     
+            data.append(torch.cat((
+                torch.Tensor(model.step(densities, dat, params, dt)),
+                torch.Tensor(dat)
+                )))
+        out.append(torch.reshape(torch.stack(copy.deepcopy(data)), (len(data), len(model.plot_args), 1)))
+    return torch.reshape(torch.stack(out), (len(out), len(out[0]), len(model.plot_args), 1))
 
 
 def get_RC_circuit_data(*, data_cfg: dict, h5group: h5.Group):
@@ -120,7 +130,7 @@ def get_RC_circuit_data(*, data_cfg: dict, h5group: h5.Group):
         dtype=float,
     )
 
-    dset.attrs["dim_names"] = ["time", "kind", "dim_name__0"]
+    dset.attrs["dim_names"] = ["permut", "time", "kind", "dim_name__0"]
     dset.attrs["coords_mode__time"] = "trivial"
     dset.attrs["coords_mode__kind"] = "values"
     dset.attrs["coords__kind"] = attributes
@@ -132,7 +142,7 @@ def get_RC_circuit_data(*, data_cfg: dict, h5group: h5.Group):
 
 def read_mos(filename):
 
-    print(f"Reading reference file {filename}")
+    print(f"Reading reference file {filename} for data generation")
     with open(filename, "r") as f:
         data = f.read()
 
