@@ -69,18 +69,19 @@ if __name__ == "__main__":
     training_data = RC_model.get_RC_circuit_data(data_cfg=model_cfg["Data"], h5group=h5group).to(
         device
     )
+    
     log.info(f"      training_data.shape = {training_data.shape}")
 
     # get the physical model object used for simulating temperature.
     physical = getattr(Physicals, model_cfg["Training"]["model_type"])
 
     # Initialise the neural net
-    log.info(f"   Initializing the neural net (inpsize: {model_cfg["NeuralNet"]["lookback"]*training_data.shape[2]}, outpsize {len(model_cfg["Training"]["to_learn"])}) ...")
+    log.info(f"   Initializing the neural net (inpsize: {physical.dynamic_variables if model_cfg["Training"]["mode"] == "single-input" else model_cfg["NeuralNet"]["lookback"]*training_data.shape[2]}, outpsize {len(model_cfg["Training"]["to_learn"])}) ...")
 
     
 
     net = base.NeuralNet(
-        input_size=model_cfg["NeuralNet"]["lookback"]*training_data.shape[2],
+        input_size=physical.dynamic_variables if model_cfg["Training"]["mode"] == "single-input" else model_cfg["NeuralNet"]["lookback"]*training_data.shape[2],
         #input_size = 1,
         output_size=len(model_cfg["Training"]["to_learn"]),
         **model_cfg["NeuralNet"],

@@ -3,7 +3,7 @@ Data:
   #  path: data/RC_model/MunichPI.csv
   #  effWinArea: 5
   #  subset: 96 #use this amount of data points from the file (1 point ~ 900s ~ 15min in BuildA) (96 ~ 1d, 288 ~ 3d)
-  model_type: RC
+  model_type: TiTh
   synthetic_data:
     initial_conditions:
       T_in: 290
@@ -13,19 +13,19 @@ Data:
     T_min: 290 #[K]
     T_max: 294 #[K]
     #num_steps: 1440 #15d
-    num_steps: 3000
-    C: 7452000 #taken from  Identifying suitable models for the heat dynamics of buildings: Peder Bacher, Henrik Madsen
-    R: 0.00529
-    C1: 4896000
-    R1: 0.00531
-    C2: 1112400
-    R2: 0.000639
+    num_steps: 1440
+    C: [7452000, 7500000] # first entries taken from  Identifying suitable models for the heat dynamics of buildings: Peder Bacher, Henrik Madsen
+    R: [0.00529, 0.00535]
+    C1: [4896000]
+    R1: [0.00531]
+    C2: [1112400]
+    R2: [0.000639]
 
   dt: 900
 
 # Settings for the neural network
 NeuralNet:
-  lookback: 10 #amount of timesteps input for param estimation. has to be < than batch_size due to implementation.
+  lookback: 100 #amount of timesteps input for param estimation. has to be < than batch_size due to implementation.
   num_layers: !is-positive-int 3
   nodes_per_layer:
     default: !is-positive-int 20
@@ -40,13 +40,14 @@ NeuralNet:
 
 # Settings for the training
 Training:
-  model_type: RC
-  batch_size: !is-positive-int 100
+  mode: single-input #predict | generalize | single-input
+  model_type: TiTh
+  batch_size: !is-positive-int 90
   loss_function:
     name: MSELoss
     kwargs:
       reduction: sum
-  to_learn: [ R, C ]
+  to_learn: [ C1, R1, C2, R2]
   #true_parameters:
     #C1: 4896000
     #R1: 0.00531

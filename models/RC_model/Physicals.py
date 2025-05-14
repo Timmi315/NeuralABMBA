@@ -61,7 +61,7 @@ class TiTh:
             "multi": 1,
             "kwargs": {}
         },
-        "heatPower": {
+        "heatPower [kW]": {
             "offset": 0,
             "multi": 0.001,
             "kwargs": {"alpha": 0.5}

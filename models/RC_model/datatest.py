@@ -78,7 +78,7 @@ def ls_estimation(cfg, data, dt, gamma, num_epochs = 1000):
     params = []
     scales = []
     for key in physical.parameter_names:
-        params.append(torch.tensor([1.0], requires_grad=True))
+        params.append(torch.tensor([0.5], requires_grad=True))
         if key in cfg["scales"]:
             scales.append(cfg["scales"][key])
         else:
@@ -89,7 +89,7 @@ def ls_estimation(cfg, data, dt, gamma, num_epochs = 1000):
     #print(params)
     #scales = [10e6, 10e-3]
     # Optimizer setup
-    optimizer = torch.optim.Adam(params, lr=0.25)
+    optimizer = torch.optim.Adam(params, lr=0.002)
     scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=gamma)
 
     # Number of epochs for the optimization
@@ -124,7 +124,7 @@ def ls_estimation(cfg, data, dt, gamma, num_epochs = 1000):
         scheduler.step()
 
         # Optional: Print loss every 100 epochs
-        if epoch % 100 == 0:
+        if epoch % 20 == 0:
             current_lr = scheduler.get_last_lr()[0]
             #print(current_lr)
             print(f'===== Epoch {epoch+1}, lr: {current_lr}, Loss: {loss.item()} =====')
@@ -168,4 +168,4 @@ print(data.shape)
 
 #plot_data(data, dt, cfg)
 #plot_parameter_space(cfg, dt)
-#ls_estimation(cfg, data, dt, gamma=1, num_epochs = 50)
+ls_estimation(cfg, data, dt, gamma=1, num_epochs = 10000)
