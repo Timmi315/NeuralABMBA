@@ -70,7 +70,8 @@ class RC_model_NN:
 
         self.current_loss = torch.tensor(0.0)
 
-        self.to_learn = {key: idx for idx, key in enumerate(to_learn)}
+        #self.to_learn = {key: idx for idx, key in enumerate(to_learn)}
+        self.to_learn = {key: idx for idx, key in enumerate(physical.parameter_names)}
         self.true_parameters = {
             key: torch.tensor(val, dtype=torch.float)
             for key, val in true_parameters.items()
@@ -156,7 +157,8 @@ class RC_model_NN:
         out = []
         for i in range(windows_per_series):
             for k in range(self.training_data.shape[0]):
-                index = np.random.randint(self.training_data.shape[1]-self.batch_size)
+                index = np.random.randint(self.training_data.shape[1]-max(self.batch_size, self.input_size
+                    ))
                 out.append((k, slice(index, index+self.batch_size)))
         random.shuffle(out)
         return out
@@ -220,7 +222,6 @@ class RC_model_NN:
                     #torch.flatten(self.training_data[batch_idx])
                     newdata if self.mode == "predict" else torch.flatten(self.training_data[batch_idx])
                 )
-                print(predicted_parameters)
                 # Get the parameters: resistance and capacity
                 parameters = [self.scaling_factors.get(key , 1.0)*predicted_parameters[self.to_learn[key]]
                                 if key in self.to_learn.keys() else self.true_parameters[key]
