@@ -1,0 +1,521 @@
+[33mcommit fee0bded9d8dd401e8845d04040180eb861a87a3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev[m[33m, [m[1;31morigin/mode-selection[m[33m, [m[1;31morigin/dev[m[33m, [m[1;32mmode-selection[m[33m)[m
+Author: Timmi315 <timmigermann@gmail.com>
+Date:   Wed May 14 14:01:43 2025 +0200
+
+    Added option for different modes
+
+[33mcommit e4a787b80eb64d1a06515c99a4bc1df29726e27f[m
+Author: Timmi315 <timmigermann@gmail.com>
+Date:   Tue May 13 23:31:41 2025 +0200
+
+    first generalization commit
+
+[33mcommit e92c6fed3f8655d2124deeb31959151a5adb0505[m
+Author: Timmi315 <timmigermann@gmail.com>
+Date:   Thu Apr 24 00:58:52 2025 +0200
+
+    new model; implemented physicals; fixed plotting
+
+[33mcommit c9831d495fde6bacb2d4640a6fe90e567ff99e17[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: Timmi315 <timmigermann@gmail.com>
+Date:   Wed Apr 2 13:37:07 2025 +0200
+
+    merge commits
+
+[33mcommit a659c8525c23aa942ae2265c8c14f5979a638ec7[m[33m ([m[1;32mmerge[m[33m)[m
+Author: Timmi315 <timmigermann@gmail.com>
+Date:   Wed Apr 2 13:34:48 2025 +0200
+
+    fabian repo
+
+[33mcommit 578ee6d06b1a8e4e4a496308d83fe5a7e14bebc1[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Thu Dec 5 17:23:01 2024 +0000
+
+    Fix failing tests (#65)
+    
+    * Fix failing tests
+    
+    * Update pytest.yml
+    
+    * Update pytest.yml
+    
+    * Update pytest.yml
+
+[33mcommit 48fa22c230af29217f6e2be1a868b7c89866c628[m
+Author: thomasgaskin <tgaskin@live.co.uk>
+Date:   Sun Nov 24 16:14:07 2024 +0000
+
+    Add Softsign to activation functions
+
+[33mcommit d293617dad910a2f30a6ac1728b654d7bb881937[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue May 28 14:27:46 2024 +0200
+
+    Update README.md
+
+[33mcommit f74fcda0b2125105fbdbc1532f861eabaa7d545a[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Fri Apr 12 22:31:22 2024 +0200
+
+    Update SIR_demo.ipynb (#61)
+    
+    * Update SIR_demo.ipynb
+
+[33mcommit 309422cb9bc11b149449941e2188ac24a2fcb6ac[m
+Author: thomasgaskin <tgaskin@live.co.uk>
+Date:   Fri Apr 12 22:08:30 2024 +0200
+
+    Corrections to SIR_demo notebook
+
+[33mcommit 9d2418f85389680e788102159fcb4fd3b58115db[m
+Author: thomasgaskin <tgaskin@live.co.uk>
+Date:   Fri Apr 12 13:46:36 2024 +0200
+
+    Add jupyter notebook demo
+
+[33mcommit ca84604ce11b6c203f969f67f46c31757e2ae103[m
+Author: thomasgaskin <tgaskin@live.co.uk>
+Date:   Fri Apr 12 13:42:59 2024 +0200
+
+    Add jupyter notebook demo
+
+[33mcommit de22817f0467b1ebb4cc293fd21164734dbcedc3[m
+Author: thomasgaskin <tgaskin@live.co.uk>
+Date:   Fri Apr 12 13:33:58 2024 +0200
+
+    Add jupyter notebook demo
+
+[33mcommit 870c403c62a40c5202b5464d31c43526f60214df[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Fri Mar 22 17:50:47 2024 +0100
+
+    Update README.md (#59)
+    
+    * Update README files
+
+[33mcommit a77d9bf6e030fe82dacf71dc51825a39397e681c[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Fri Mar 22 16:38:24 2024 +0100
+
+    Fix images in readme (#58)
+    
+    Use png and gif for README images
+
+[33mcommit 04bbd5d30fd14159d906664c22dc489bcd92d806[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Mar 19 14:53:47 2024 +0100
+
+    Add Windows installation fix (#57)
+    
+    * Update multiverse_project_cfg.yml
+    
+    Undo Windows prefix
+    
+    * Update README.md
+
+[33mcommit e463c4f7711d20d00b91c286718c373a9c491a13[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Mar 19 10:53:18 2024 +0100
+
+    Update multiverse_project_cfg.yml
+    
+    Specify windows prefix in base cfg
+
+[33mcommit 99797871a4380c1a78d94aee4925e087c6c527ea[m
+Author: thomasgaskin <tgaskin@live.co.uk>
+Date:   Thu Feb 29 16:36:09 2024 +0000
+
+    Bugfix to marginal_distribution plot and Kuramoto triangles_uni plot
+
+[33mcommit 6fbebd3acf7b38f6c7495e2023cdd3542409679a[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Thu Feb 29 14:35:24 2024 +0000
+
+    Update README.md
+    
+    Update utopya Windows link
+
+[33mcommit 9c8960777b2f7c637ef0f800fedff9d89aa0b253[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Thu Feb 1 09:43:30 2024 +0000
+
+    Update README.md
+
+[33mcommit 989bd2e0fa7f0dac2560d7f7d0baee66da2c217f[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Thu Feb 1 09:42:53 2024 +0000
+
+    Update README.md
+
+[33mcommit 4247fd6022cfac9ad30a340c126fe226a02bf644[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Thu Feb 1 10:38:48 2024 +0100
+
+    Update README.md and requirements.txt for Windows (#55)
+    
+    * Update README.md
+    
+    * Update requirements.txt
+
+[33mcommit 6e878e5301ee50b29b9a9ef22fd702f882eb8714[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Mon Jan 8 16:59:43 2024 +0100
+
+    Add images to README (#54)
+    
+    * Update README.md
+
+[33mcommit 109c415a3b5905905bb7679329de4493a153283c[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Mon Jan 8 15:21:33 2024 +0100
+
+    Update README.md (#53)
+    
+    * Update README.md with links to models
+
+[33mcommit ed06dba6b8c54350e13d3dcae4695685ef2a56fb[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Sun Jan 7 23:58:28 2024 +0100
+
+    Update README.md (#52)
+    
+    * Update README.md and add tutorial
+    
+    * Update model READMEs
+    
+    * Bugfixes to Kuramoto plots; plot all figures in pipeline
+    
+    * Move SIR NN to seperate file; make scaling factors controllable from the config
+    
+    * Make NN training test more resilient
+
+[33mcommit b252005590f288cdffbfb6c136f1a5a3c6940cbc[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Dec 26 17:50:34 2023 +0100
+
+    Make neural_net training test more resilient
+
+[33mcommit e6d0989cfa7ce34a9100400820d006bc106d8796[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Dec 26 17:39:54 2023 +0100
+
+    Disallow fast fail of matrix jobs
+
+[33mcommit e5ae67d4db12469e23f6e4368130f34427a8d205[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Dec 26 17:28:11 2023 +0100
+
+    Make neural net test more resilient
+
+[33mcommit a575c667a47bad11b3c50059c1c6b3c4539db6ed[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Dec 26 17:23:21 2023 +0100
+
+    Amend README
+
+[33mcommit 2a2484b7ca7794cbac35862867adf2b0ce28f5d1[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Dec 26 17:19:10 2023 +0100
+
+    Increase Python compatibility (#51)
+    
+    * Test more python versions
+    
+    * Remove Py3.11 syntax in data_ops
+    
+    * Make py3.8 compatible
+    
+    * Make SIR dynamics tests more resilient
+
+[33mcommit 69ebcc31add74e9c4b67f5403e3fd070ccd10b0d[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Fri Dec 22 15:31:04 2023 +0100
+
+    Update README syntax
+
+[33mcommit e26eb476e06189fbbce1e28a3581d914694939d2[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Fri Dec 22 15:27:33 2023 +0100
+
+    Update Markdown syntax for README
+
+[33mcommit ad3b784b89a1d17e59be91472c2b88a0afc3395d[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Fri Dec 22 15:24:57 2023 +0100
+
+    Update Markdown syntax for README
+
+[33mcommit 1ed6a42c36815011aa2af8b443e108e36ff0b9d1[m
+Merge: 2363e29 34ba011
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Mon Dec 18 10:13:43 2023 +0000
+
+    Merge pull request #50 from ThGaskin/add_powergid_simulation_to_Kuramoto
+    
+    Add Powergrid data to Kuramoto
+
+[33mcommit 34ba011725099cdabf1a6ac3ff513b119e5b01df[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Fri Dec 15 15:27:55 2023 +0000
+
+    Add powergrid data and plot configuration
+
+[33mcommit f38e61ac1ac51197c8febcfcfde9c9b322eda0da[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Fri Dec 15 12:48:01 2023 +0000
+
+    Register 'prob_density' as a facet_grid plot; delete HarrisWilson plot module
+
+[33mcommit 41209773b4da0087608ae16d884642e8f881ce59[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Fri Dec 15 11:26:44 2023 +0000
+
+    Move Kuramoto NN to seperate file
+
+[33mcommit 414d27ce9c3a9b3a2fae18eba0140120116f2762[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Fri Dec 15 11:25:45 2023 +0000
+
+    Remove shebang from Covid/NN.py
+
+[33mcommit 2363e29d94638e19fc781455dec7c9432f5dd9be[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Wed Dec 13 09:30:26 2023 +0000
+
+    Corrections to Covid README
+
+[33mcommit 7f28d86e93da9b535e9bf22c48721ce41660f7b0[m
+Merge: fa6d807 9372c33
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Wed Dec 13 01:07:50 2023 +0000
+
+    Merge pull request #49 from ThGaskin/ci_fix
+    
+    Bugfix to CI
+
+[33mcommit 9372c33f3878494ba792acfc0e54bf8d077495df[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Wed Dec 13 00:31:30 2023 +0000
+
+    Bugfix to deployment deletion
+
+[33mcommit fa6d80725a8c7185bc586ce594a959aea6f44e23[m
+Merge: ca9ec11 fa720cf
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Dec 12 23:02:55 2023 +0000
+
+    Merge pull request #48 from ThGaskin/expand_graph_tests
+    
+    Expand graph_generation test coverage
+
+[33mcommit fa720cf45a6083be4a1fc9aa611ba38bc85fe691[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Dec 12 22:56:24 2023 +0000
+
+    Expand graph_generation test coverage
+
+[33mcommit ca9ec11fa55ae0bcb95b7485eed39df9ba6537ea[m
+Merge: 656585c ad25eb3
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Dec 12 22:18:58 2023 +0000
+
+    Merge pull request #47 from ThGaskin/add_coverage_badge_to_README
+    
+    Deploy coverage report to README and pages
+
+[33mcommit ad25eb3efc0d3c3d982983ba67f5642a7b362d8f[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Dec 12 19:05:20 2023 +0000
+
+    Deploy coverage report to pages
+
+[33mcommit 656585ccff4d29c1158c8156fd868372bd503bf5[m
+Merge: b8e5bac 2b88929
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Dec 12 18:47:38 2023 +0000
+
+    Merge pull request #46 from ThGaskin/add_covid_model
+    
+    Add Covid model
+
+[33mcommit 2b88929f2ef056a6b93174db1c678324718ff3d0[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Dec 12 18:40:25 2023 +0000
+
+    Update github CI config
+
+[33mcommit 6043a4fd5afb075d42ee6d4d9a5676f6a7ffd9dc[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Dec 12 18:39:12 2023 +0000
+
+    Add Covid model
+
+[33mcommit e9db7e2935fccfdc2955a8e4c7b7515285d7d3a2[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Dec 12 18:20:53 2023 +0000
+
+    Bugfixes to data_ops
+
+[33mcommit a404f34ff23bc18b88685c17d94b75536763a11b[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Tue Dec 12 18:20:01 2023 +0000
+
+    Corrections to SIR plots and renaming of configuration sets
+
+[33mcommit b8e5bac4a2ffd39c8bba035f788efd6055760ce4[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Mon Dec 11 11:59:19 2023 +0000
+
+    Fix failing pipeline 2 (#45)
+    
+    * Remove ruamel.yaml version requirement
+    
+    * Fix failing pipeline
+
+[33mcommit 8ce5e2e77ebe0690e5d76b06ab6c535341377dec[m
+Author: Joerg Wangemann <joerg.wangemann@gmx.de>
+Date:   Mon Dec 11 11:36:22 2023 +0100
+
+    Fixing ruamel deprecation error. Fixes #43 (#44)
+
+[33mcommit e60ef3d8061e120dcd665c263c1fea4d99c4d0d0[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Sun Dec 10 00:37:18 2023 +0000
+
+    Improvements to marginal calculations (#41)
+    
+    * Improve joint and marginal calculations for the SIR model; improved batching for SIR training; remove smooth data generation for SIR; remove densities_from_marginals plot; make colours and page widths available from the DAG
+    
+    * Bugfix for neural net prior initialisation (optimizer not reset)
+    
+    * Improvements to data operations, marginal computation, and plotting: add broadcasting function, and aggregation and statistics functionality for compute_marginal function; `flatten_dims` now allows using an existing dimension name as the new name; `mode` can now return either the x-value or the function value of the mode; `plot_prob_density` now supports facet_griding; remove noisy synthetic datasets
+    
+    * Bugfixes to SIR.plot_from_joint and plot_prob_density
+    
+    * Bugfixes and improvements to marginal computation
+    
+    * Add old compute_marginals function for backwards compatibility
+    
+    * Improvements to data ops: use scipy.integrate for mean and std calculation; allow normalisation for hist_ndim; remove marginals_old; allow drop in matrix_indices_sel; specify path in to_csv
+    
+    * Use correct reduction for SIR loss function; improvements to SIR run.py structure
+    
+    * Add SIR MCMC config and data
+    
+    * Add SIR grid search config and data
+    
+    * Alpha parameter for SIR (commented out)
+    
+    * Legend tracking correction to plot_prob_density; allow x to be a coordinate in dataset for non-hue plot
+    
+    * Use 'reduction: sum' in HarrisWilson MSE loss function; use new marginals function in synthetic_example cfg
+    
+    * Add Langevin sampler and MCMC configs to SIR model; add Likelihood_neural configs
+    
+    * Remove 'dset = ds' from plot_prob_density
+    
+    * Add 'scale_y_bins' functionality to marginal operation
+    
+    * Add Langevin sampler to include and SIR
+    
+    * Move 'Theoretical predictions' cfgs to SIR top-level cfgs folder; rework Hellinger distance function to integrate using scipy (no longer comp. with Kuramoto!); combine all MCMC and ground truth datasets into one csv file
+    
+    * Remove old plots from MCMC eval
+    
+    * Corrections to mean, std data_ops; corrections to marginal tests
+    
+    * Allow setting the `linestyle` in `plot_prob_density` as a Sequence
+    
+    * Update Kuramoto plots; outsource network-related ops to nw_ops.py
+    
+    * Allow passing either 'axis' or 'along_dim' kwarg to hist_1D
+    
+    * Modify HarrisWilsonNW model to use new marginal calculation technique
+    
+    * Add option of force-accepting an MCMC sample
+    
+    * Add Kuramoto MCMC sampling; add MCMC data and configs
+    
+    * Adjust python tests; add SIR true_data_grid_search; change sigma kwarg of plot_prob_density to 'smoothing'
+    
+    * Adjust READMEs; use python 3.11 in github workflow
+    
+    * Remove tqdm from HarrisWilson model
+    
+    * Add ruamel.yaml version to <0.18
+    
+    * Update pre-commit hooks
+
+[33mcommit 177901c5b40cb951f7922928180725d06f7fde1d[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Wed Sep 27 22:29:31 2023 +0200
+
+    Bugfix to prior initialisation function (#40)
+
+[33mcommit e1ce7281ddda19f47f30c49965740d9cab04b55c[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Wed Sep 27 12:09:54 2023 +0200
+
+    Initialisation to prior (#37)
+    
+    * Allow specifying distributions for each entry of a random tensor; allow initialising the neural net to a prior
+    
+    * Update README and update random_tensor syntax
+
+[33mcommit 7c882305048e815ddb4b6d1ae0d15b6a7896a4ea[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Wed Jul 5 00:37:18 2023 +0800
+
+    Restructure SIR parameter dataset; add densities from joint plot; plot marginals in a sweep; reduce default number of epochs; adjust SIR default plots; update utopya-project defaults (#35)
+
+[33mcommit 763441ab0cc14fbc47831cb416f1790b1dda7123[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Mon Apr 3 10:26:33 2023 +0100
+
+    Remove Latex requirement (#32)
+    
+    * Set text.usetex: False by default, and add latex installation instructions to README
+    
+    * Add .latex_on and .latex_off base configurations
+    
+    * Update README
+
+[33mcommit 072bc149a87c4c1c1c72c9ca6fb5bd8b0f88bc3c[m
+Merge: 6d33995 6431080
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Fri Mar 31 00:46:05 2023 +0100
+
+    Merge pull request #30 from ThGaskin/minor_plot_formatting_adjustments
+    
+    Minor plot formatting corrections
+
+[33mcommit 643108002c416858b11dd441d6db6dc09aa4e63b[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Thu Mar 30 17:04:02 2023 +0100
+
+    Minor plot formatting corrections
+
+[33mcommit 6d33995f630955b4aaaf634170bf7b51e2e1bfc5[m
+Merge: ea16ccf bae18ac
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Mon Mar 27 15:02:51 2023 +0100
+
+    Merge pull request #28 from ThGaskin/add_convexity_analysis
+    
+    Add convexity analysis
+
+[33mcommit bae18ac97fe77f2271cd4250877b58b03c732f7e[m
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Fri Mar 24 17:59:28 2023 +0000
+
+    Add convexity plot
+
+[33mcommit ea16ccfde6cdd34dffedf69b8144d11c80e3a724[m
+Merge: c550bb4 cab05f6
+Author: Thomas Gaskin <tgaskin@live.co.uk>
+Date:   Fri Mar 24 12:06:24 2023 +0000
+
+    Merge pull request #27 from ThGaskin/change_Kuramoto_parameters
+    
+    Add alpha parameter to Kuramoto
