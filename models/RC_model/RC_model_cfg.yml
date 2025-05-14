@@ -12,7 +12,7 @@ Data:
     controller: PControl #PControl, TwoPointControl
     T_min: 290 #[K]
     T_max: 294 #[K]
-    num_steps: 144000 #1500d
+    num_steps: 1440 #1500d
     C: 7452000 #taken from  Identifying suitable models for the heat dynamics of buildings: Peder Bacher, Henrik Madsen
     R: 0.00529
     C1: 4896000
