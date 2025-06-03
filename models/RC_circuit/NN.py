@@ -204,6 +204,7 @@ class RC_circuit_NN:
             self.neural_net.optimizer.step()
             self.neural_net.optimizer.zero_grad()
             self.current_loss = loss.clone().detach().cpu().numpy().item()
+            print(self.current_loss)
             self.current_predictions = predicted_parameters.clone().detach().cpu()
 
             self._time += 1
@@ -219,6 +220,7 @@ class RC_circuit_NN:
         if self._time >= self._write_start and (self._time % self._write_every == 0):
             self._dset_loss.resize(self._dset_loss.shape[0] + 1, axis=0)
             self._dset_loss[-1] = self.current_loss
+            print(self._dset_loss)
             self.dset_parameters.resize(self.dset_parameters.shape[0] + 1, axis=0)
             self.dset_parameters[-1, :] = [
                 self.current_predictions[self.to_learn[p]] for p in self.to_learn.keys()

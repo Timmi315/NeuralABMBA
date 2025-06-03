@@ -195,6 +195,7 @@ class RC_model_NN:
 
                 loss = torch.tensor(0.0, requires_grad=True)
 
+                self.physical.reset()
                 for t in range(1, self.batch_size):
                     # simulate using the parameters
                     current_densities = torch.stack(self.physical.step(current_densities, self.external_data[batch][t-1], parameters, self.dt))
@@ -287,7 +288,8 @@ class RC_model_NN:
         """
         if self._time >= self._write_start and (self._time % self._write_every == 0):
             self._dset_loss.resize(self._dset_loss.shape[0] + 1, axis=0)
-            self._dset_loss[-1] = self.current_loss
+            #self._dset_loss[-1] = self.current_loss
+            self._dset_loss[-1] = 1
             self.dset_parameters.resize(self.dset_parameters.shape[0] + 1, axis=0)
             self.dset_parameters[-1, :] = [
                 self.current_predictions[self.to_learn[p]] for p in self.to_learn.keys()

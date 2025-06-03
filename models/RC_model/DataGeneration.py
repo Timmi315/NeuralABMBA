@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import Physicals
 import copy
+from dantro._import_tools import get_from_module
 
 sys.path.append(up(up(up(__file__))))
 
@@ -51,7 +52,7 @@ def generate_weather_based_data(cfg: dict, *, dt: float) -> torch.Tensor:
     wdata, _ = read_mos(up(up(up(__file__))) + "/data/RC_model/weatherData/Munich_5years.mos")
     wdata = wdata.to_numpy(dtype = float)
 
-    model = getattr(Physicals, cfg["model_type"])
+    model = get_from_module(Physicals, name = cfg["model_type"])()
     initial_condition = torch.Tensor(model.initial_condition(cfg, wdata))
 
     
@@ -113,13 +114,13 @@ def get_RC_circuit_data(*, data_cfg: dict, h5group: h5.Group):
             cfg=data_cfg["synthetic_data"],
             dt=data_cfg["dt"]
         )
-        attributes = list(getattr(Physicals, data_cfg["model_type"]).plot_args.keys())
+        attributes = list(get_from_module(Physicals, name = data_cfg["model_type"])().plot_args.keys())
     
     else:
         raise ValueError(
             f"You must supply one of 'load_from_dir' or 'synthetic data' keys!"
         )
-
+        '''
     # Store the synthetically generated data in an h5 file
     dset = h5group.create_dataset(
         "RC_data",
@@ -137,6 +138,7 @@ def get_RC_circuit_data(*, data_cfg: dict, h5group: h5.Group):
     dset.attrs["coords_mode__dim_name__0"] = "trivial"
 
     dset[:, :] = data
+    '''
 
     return data
 
@@ -163,4 +165,5 @@ def read_mos(filename):
     df = pd.DataFrame(arr2, columns = [f"C{i+1}" for i in range(n_cols)])
     return df, header
 
-#get_RC_circuit_data(data_cfg = {"load_from_dir": {"path": "C:/Users/Timo/Documents/SublimeProjects/NeuralABMBA/data/RC_model/MunichPI.csv", "effWinArea": 1.5}}, h5group = None)
+#print(get_RC_circuit_data(data_cfg = {"load_from_dir": {"path": "C:/Users/Timo/Documents/SublimeProjects/NeuralABMBA/data/RC_model/MunichPI.csv", "effWinArea": 1.5, 'subset': 200}}, h5group = None).shape)
+

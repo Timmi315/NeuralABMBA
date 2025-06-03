@@ -1,0 +1,14 @@
+perform_sweep: True
+parameter_space:
+  seed: !sweep
+    default: 1
+    range: [8]
+  num_epochs: 50
+ # RC_model:
+#    Training:
+#      batch_size: 100
+   # Data:
+   #   load_from_dir:
+   #     path: C:/Users/Timo/Documents/SublimeProjects/NeuralABMBA/data/RC_model/MunichPI.csv
+   #     effWinArea: 8
+   #     subset: 1440

@@ -96,9 +96,11 @@ if __name__ == "__main__":
     log.info(f"   Now commencing training for {num_epochs} epochs ...")
     for i in range(num_epochs):
         model.epoch()
+        log.progress(str(model._dset_loss))
         log.progress(
             f"   Completed epoch {i+1} / {num_epochs}; "
             f"   current loss: {model.current_loss}"
+            f"   _dset_loss: {model._dset_loss}"
         )
 
     log.info("   Simulation run finished.")

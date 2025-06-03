@@ -1,7 +1,14 @@
+class Physical:
+    def __init__(self):
+        pass
+    def reset(self):
+        pass
 
-class RC:
+
+class RC(Physical):
     parameter_names = ["C", "R"]
     dynamic_variables = 1
+    data_names = ["T_in", "T_out", "heatPower", "solarGains"]
     plot_args = {
         "T_in": {
             "offset": -273.15,
@@ -25,11 +32,11 @@ class RC:
         }
     }
 
-    def initial_condition(cfg, wdata):
+    def initial_condition(self, cfg, wdata):
         return [cfg["initial_conditions"]["T_in"], wdata[0, 2] + 273.15, 0, 0]
 
 
-    def step(densities, data, params, dt):
+    def step(self, densities, data, params, dt):
         #for generation:
         # densities: dynamic variables
         # data: [T_ambient, heatPower(T_in), Q_solar]
@@ -41,10 +48,10 @@ class RC:
 
         return [densities[0]+dt/params[0]*((data[0]-densities[0])/params[1] + data[1] + data[2])]
 
-
-class TiTh:
+class TiTh(Physical):
     parameter_names = ["C1", "R1", "C2", "R2"]
     dynamic_variables = 2
+    data_names = ["T_in", "T_heater", "T_out", "heatPower", "solarGains"]
     plot_args = {
         "T_in": {
             "offset": -273.15,
@@ -73,11 +80,11 @@ class TiTh:
         }
     }
 
-    def initial_condition(cfg, wdata):
+    def initial_condition(self, cfg, wdata):
         return [cfg["initial_conditions"]["T_in"], cfg["initial_conditions"]["T_in"], wdata[0, 2] + 273.15, 0, 0]
 
 
-    def step(densities, data, params, dt):
+    def step(self, densities, data, params, dt):
         #for generation:
         # densities: dynamic variables
         # data: [T_ambient, heatPower(T_in), Q_solar]
@@ -90,3 +97,16 @@ class TiTh:
         T_in = densities[0] + dt/params[0] * ((T_heater - densities[0])/params[3] + (data[0] - densities[0])/params[1] + data[2])
         return [T_in, T_heater]
 
+    class Hidden(RC):
+        parameter_names = ["C1", "R1", "C2", "R2"]
+        T_heater = None
+
+        def step(self, densities, data, params, dt):
+            # densities[1] -> data[0]
+            if self.T_heater is None:
+                self.T_heater = [densities[0]]
+            self.T_heater.append(self.T_heater[-1] + dt/params[2] * (data[1] + (densities[0] - self.T_heater[-1]) / params[3]))
+            return [densities[0] + dt/params[0] * ((self.T_heater[-1] - densities[0])/params[3] + (data[0] - densities[0])/params[1] + data[2])]
+
+        def reset(self):
+            self.T_heater = None

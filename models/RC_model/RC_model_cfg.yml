@@ -3,7 +3,7 @@ Data:
   #  path: data/RC_model/MunichPI.csv
   #  effWinArea: 5
   #  subset: 96 #use this amount of data points from the file (1 point ~ 900s ~ 15min in BuildA) (96 ~ 1d, 288 ~ 3d)
-  model_type: RC
+  model_type: TiTh.Hidden
   synthetic_data:
     initial_conditions:
       T_in: 290
@@ -37,17 +37,22 @@ NeuralNet:
       -1: abs
   learning_rate: !is-positive 0.002
   optimizer: Adam
+  prior:
+    distribution: uniform
+    parameters:
+      lower: 0
+      upper: 1
 
 # Settings for the training
 Training:
   mode: predict #predict | generalize | single-input
-  model_type: RC
-  batch_size: !is-positive-int 1000
+  model_type: TiTh.Hidden
+  batch_size: !is-positive-int 300
   loss_function:
     name: MSELoss
     kwargs:
       reduction: sum
-  to_learn: [R1, C2]
+  to_learn: [C1, R1, C2, R2]
   #true_parameters:
     #C1: 4896000
     #R1: 0.00531

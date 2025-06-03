@@ -9,7 +9,7 @@ import numpy as np
 import ruamel.yaml as yaml
 import torch
 from dantro import logging
-from dantro._import_tools import import_module_from_path
+from dantro._import_tools import import_module_from_path, get_from_module
 
 sys.path.append(up(up(__file__)))
 sys.path.append(up(up(up(__file__))))
@@ -73,7 +73,7 @@ if __name__ == "__main__":
     log.info(f"      training_data.shape = {training_data.shape}")
 
     # get the physical model object used for simulating temperature.
-    physical = getattr(Physicals, model_cfg["Training"]["model_type"])
+    physical = get_from_module(Physicals, name = model_cfg["Training"]["model_type"])()
 
     # Initialise the neural net
     log.info(f"   Initializing the neural net (inpsize: {physical.dynamic_variables if model_cfg["Training"]["mode"] == "single-input" else model_cfg["NeuralNet"]["lookback"]*training_data.shape[2]}, outpsize {len(model_cfg["Training"]["to_learn"])}) ...")
