@@ -120,7 +120,7 @@ def get_RC_circuit_data(*, data_cfg: dict, h5group: h5.Group):
         raise ValueError(
             f"You must supply one of 'load_from_dir' or 'synthetic data' keys!"
         )
-        '''
+        
     # Store the synthetically generated data in an h5 file
     dset = h5group.create_dataset(
         "RC_data",
@@ -138,7 +138,7 @@ def get_RC_circuit_data(*, data_cfg: dict, h5group: h5.Group):
     dset.attrs["coords_mode__dim_name__0"] = "trivial"
 
     dset[:, :] = data
-    '''
+    
 
     return data
 

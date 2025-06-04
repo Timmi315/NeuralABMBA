@@ -1,9 +1,24 @@
-class Physical:
+import torch
+import torch.nn as nn
+
+class Physical(nn.Module):
     def __init__(self):
-        pass
+        super().__init__()
     def reset(self):
         pass
 
+    def set_params(self, params):
+        self.params = params
+        #print("setting params")
+
+    def forward(self, t, state):
+        #print(f"fw input: ({t}, {state})")
+        #print(state[0] + self.dt/self.params[0]*((self.external_data[int(t.item())][0]-state[0])/self.params[1] + self.external_data[int(t.item())][1] + self.external_data[int(t.item())][2]))
+        out = self.step(state, self.external_data[int(t.item())], self.params, int(self.dt))
+        #print(out)
+        #out = torch.reshape(out, (1,self.dynamic_variables))
+        #print(f"fw output: {out-state}")
+        return out - state
 
 class RC(Physical):
     parameter_names = ["C", "R"]
@@ -46,7 +61,7 @@ class RC(Physical):
         # data: rest of data generated through step() (one point in time)
         # params: estimated or set parameters in shape of parameter_names
 
-        return [densities[0]+dt/params[0]*((data[0]-densities[0])/params[1] + data[1] + data[2])]
+        return (densities[0]+dt/params[0]*((data[0]-densities[0])/params[1] + data[1] + data[2])).unsqueeze(0)
 
 class TiTh(Physical):
     parameter_names = ["C1", "R1", "C2", "R2"]
@@ -95,7 +110,7 @@ class TiTh(Physical):
         # params: estimated or set parameters in shape of parameter_names
         T_heater = densities[1] + dt/params[2] * (data[1] + (densities[0] - densities[1])/params[3])
         T_in = densities[0] + dt/params[0] * ((T_heater - densities[0])/params[3] + (data[0] - densities[0])/params[1] + data[2])
-        return [T_in, T_heater]
+        return torch.stack([T_in, T_heater])
 
     class Hidden(RC):
         parameter_names = ["C1", "R1", "C2", "R2"]
@@ -106,7 +121,7 @@ class TiTh(Physical):
             if self.T_heater is None:
                 self.T_heater = [densities[0]]
             self.T_heater.append(self.T_heater[-1] + dt/params[2] * (data[1] + (densities[0] - self.T_heater[-1]) / params[3]))
-            return [densities[0] + dt/params[0] * ((self.T_heater[-1] - densities[0])/params[3] + (data[0] - densities[0])/params[1] + data[2])]
+            return (densities[0] + dt/params[0] * ((self.T_heater[-1] - densities[0])/params[3] + (data[0] - densities[0])/params[1] + data[2])).unsqueeze(0)
 
         def reset(self):
             self.T_heater = None

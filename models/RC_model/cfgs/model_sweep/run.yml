@@ -2,8 +2,8 @@ perform_sweep: True
 parameter_space:
   seed: !sweep
     default: 1
-    range: [8]
-  num_epochs: 50
+    range: [24]
+  num_epochs: 20
  # RC_model:
 #    Training:
 #      batch_size: 100

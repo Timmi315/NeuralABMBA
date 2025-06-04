@@ -150,7 +150,7 @@ cfg = {
     "effWinArea": 7.89, #[m2] so given Solar radiance [W/m2]*effWinArea = [W]
     "maxHeatingPower": 5000, #[W]
     "controller": "PControl", #PControl, TwoPointControl
-    "num_steps": 14400,  # You can adjust the number of steps as needed (rn: 1/100year in minutes)
+    "num_steps": 1440,  # You can adjust the number of steps as needed (rn: 1/100year in minutes)
     "T_min": 290, #[K]
     "T_max": 294, #[K]
     "C": [7452000, 7500000],         # Capacitance [Ws/°C]
@@ -166,6 +166,6 @@ dt = 900 #Time differential in seconds
 data = generate_weather_based_data(cfg, dt=dt)[0] # type: torch.Tensor, size [num_steps, num_variables, 1], Generate synthetic data
 print(data.shape)
 
-#plot_data(data, dt, cfg)
+plot_data(data, dt, cfg)
 #plot_parameter_space(cfg, dt)
 #ls_estimation(cfg, data, dt, gamma=1, num_epochs = 100)

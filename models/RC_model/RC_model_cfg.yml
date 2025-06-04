@@ -3,7 +3,7 @@ Data:
   #  path: data/RC_model/MunichPI.csv
   #  effWinArea: 5
   #  subset: 96 #use this amount of data points from the file (1 point ~ 900s ~ 15min in BuildA) (96 ~ 1d, 288 ~ 3d)
-  model_type: TiTh.Hidden
+  model_type: TiTh
   synthetic_data:
     initial_conditions:
       T_in: 290
@@ -46,8 +46,8 @@ NeuralNet:
 # Settings for the training
 Training:
   mode: predict #predict | generalize | single-input
-  model_type: TiTh.Hidden
-  batch_size: !is-positive-int 300
+  model_type: TiTh
+  batch_size: !is-positive-int 750
   loss_function:
     name: MSELoss
     kwargs:

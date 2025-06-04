@@ -5,9 +5,12 @@ import coloredlogs
 import h5py as h5
 import numpy as np
 import torch
+from torchdiffeq import odeint
 from dantro import logging
 from dantro._import_tools import import_module_from_path
 import random
+
+from torchviz import make_dot
 
 sys.path.append(up(up(__file__)))
 sys.path.append(up(up(up(__file__))))
@@ -80,7 +83,6 @@ class RC_model_NN:
 
         # Training data (time series of T_in) and external forcing (T_out, Q_H, Q_O)
         self.training_data = training_data
-        self.external_data = external_data
         self.physical = physical
 
         # Time differential to use for the numerical solver
@@ -101,6 +103,9 @@ class RC_model_NN:
             self.batches = batches
         
         self.mode = mode
+
+        physical.external_data = external_data[0]
+        physical.dt = dt
 
         # Scaling factors to use for the parameters, if given
         self.scaling_factors = scaling_factors
@@ -223,51 +228,44 @@ class RC_model_NN:
                     #torch.flatten(self.training_data[batch_idx])
                     newdata if self.mode == "predict" else torch.flatten(self.training_data[batch_idx])
                 )
+                #print(f"predicted_parameters: {predicted_parameters}")
+                #print(predicted_parameters.requires_grad)
                 # Get the parameters: resistance and capacity
-                parameters = [self.scaling_factors.get(key , 1.0)*predicted_parameters[self.to_learn[key]]
+                parameters = torch.stack([self.scaling_factors.get(key , 1.0)*predicted_parameters[self.to_learn[key]]
                                 if key in self.to_learn.keys() else self.true_parameters[key]
-                                for key in self.physical.parameter_names]
+                                for key in self.physical.parameter_names])
+                #print(f"parameters: {parameters}")
+
+                self.physical.set_params(parameters)
                 #parameters = [4896000, 0.00531, 1112400, 0.000639]
                 #parameters = [7452000, 0.00529]
-                '''
-                R = (
-                    self.scaling_factors.get("R", 1.0) * predicted_parameters[self.to_learn["R"]]
-                    if "R" in self.to_learn.keys()
-                    else self.true_parameters["R"]
-                )
-                C = (
-                    self.scaling_factors.get("C", 1.0) * predicted_parameters[self.to_learn["C"]]
-                    if "C" in self.to_learn.keys()
-                    else self.true_parameters["C"]
-                )
-                '''
                 # Get current initial condition and make traceable
                 current_densities = self.training_data[batch_idx].clone()
                 current_densities.requires_grad_(True)
 
                 loss = torch.tensor(0.0, requires_grad=True)
+                #print(f"time = torch.arange({batch_idx + 1}, {self.batches[batch_no+1] + 1}, dtype = torch.float32)")
+                time = torch.arange(batch_idx + 1, self.batches[batch_no+1] + 1, dtype = torch.float32)
+                #print(f"time.shape: {time.shape}")
+                #print(f"y0.shape: {current_densities.shape}")
+                #print(f"external_data.shape: {self.physical.external_data.shape}")
+                trajectory = odeint(self.physical,
+                                        current_densities,
+                                        time,
+                                        method = 'euler',
+                                        options={'step_size': 1.0}
+                                        )
+                #print(trajectory.requires_grad)
+                #print(trajectory.shape)
+                #print(self.training_data[batch_idx + 1: self.batches[batch_no+1] + 1].shape)
+                loss = self.loss_function(trajectory, self.training_data[batch_idx: self.batches[batch_no+1]]) * self.training_data.shape[0] / (self.batches[batch_no+1] - batch_idx)
+                #print(list(self.neural_net.named_parameters()))
+                #dot = make_dot(loss, params = dict(self.neural_net.named_parameters()))
+                #dot.render("graph", format = "png", directory = "C:/Users/Timo/Documents/SublimeProjects/NeuralABMBA")
 
-                for t in range(batch_idx + 1, self.batches[batch_no + 1] + 1):
-                    #print(current_densities)
-                    #print(self.external_data[:,t])
-                    #print(C)
-                    #print(R)
-                    # Generate the next step of the time series
-                    current_densities = torch.stack(self.physical.step(current_densities, self.external_data[t], parameters, self.dt))
-                    #current_densities = current_densities + self.dt / C * (
-                    #        (self.external_data[t][0] - current_densities) / R
-                    #        + self.external_data[t][1]
-                    #        + self.external_data[t][2]
-                    #)
+                #print(f"Loss: {loss.item()}")
+                #print(f"Grad check: {list(self.neural_net.parameters())[0].grad}")
 
-                    # Calculate loss
-                    loss = loss + self.loss_function(
-                        current_densities, self.training_data[t]
-                    ) * (
-                        self.training_data.shape[0]
-                        / (self.batches[batch_no + 1] - batch_idx)
-
-                    )
                 loss.backward()
                 self.neural_net.optimizer.step()
                 self.neural_net.optimizer.zero_grad()
@@ -288,8 +286,8 @@ class RC_model_NN:
         """
         if self._time >= self._write_start and (self._time % self._write_every == 0):
             self._dset_loss.resize(self._dset_loss.shape[0] + 1, axis=0)
-            #self._dset_loss[-1] = self.current_loss
-            self._dset_loss[-1] = 1
+            self._dset_loss[-1] = self.current_loss
+            #self._dset_loss[-1] = 1
             self.dset_parameters.resize(self.dset_parameters.shape[0] + 1, axis=0)
             self.dset_parameters[-1, :] = [
                 self.current_predictions[self.to_learn[p]] for p in self.to_learn.keys()
